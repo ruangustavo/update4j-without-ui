@@ -11,6 +11,7 @@
   <modules>
     <module>business</module>
     <module>bootstrap</module>
+    <module>create-config</module>
   </modules>
 
   <properties>
@@ -36,6 +37,9 @@
         <version>3.1.0</version>
         <configuration>
           <outputDirectory>${project.basedir}/build</outputDirectory>
+          <excludes>
+            <exclude>create-config/**</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
