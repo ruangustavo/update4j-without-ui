@@ -30,8 +30,9 @@ public class Bootstrap implements Delegate {
 
   @Override
   public void main(List<String> list) throws Throwable {
-    URL configUrl = new URL("http://docs.update4j.org/demo/business/config.xml");
+    URL configUrl = new URL("https://raw.githubusercontent.com/ruangustavo/update4j-config-files/master/business/config.xml");
     Configuration config = null;
+
     try (Reader in = new InputStreamReader(configUrl.openStream(), StandardCharsets.UTF_8)) {
       config = Configuration.read(in);
     } catch (IOException e) {
@@ -40,6 +41,10 @@ public class Bootstrap implements Delegate {
         config = Configuration.read(in);
       }
     }
+
+    BootstrapUpdateHandler bootstrapUpdateHandler = new BootstrapUpdateHandler(config);
+    bootstrapUpdateHandler.update();
+    bootstrapUpdateHandler.launch();
   }
 
 }
