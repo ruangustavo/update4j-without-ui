@@ -7,48 +7,47 @@ import java.nio.file.Paths;
 
 import org.update4j.Configuration;
 import org.update4j.FileMetadata;
-import org.update4j.OS;
 
 public class CreateConfig {
 
   private static final String BASE_URI = "https://raw.githubusercontent.com/ruangustavo/update4j-without-ui/master/build";
+  private static final String CONFIG_DIR = System.getProperty("user.dir") + "/build";
+  private static final String BUSINESS_DIR = CONFIG_DIR + "/business";
+  private static final String BOOTSTRAP_DIR = CONFIG_DIR + "/bootstrap";
 
-  public static void main(String[] args) throws IOException {
-    String configLoc = System.getProperty("user.dir");
-    String dir = configLoc + "/build/business";
+  public static void main(String[] args) {
+    Configuration businessConfig = getUpdateConfig();
+    writeTo(BUSINESS_DIR + "/config.xml", businessConfig);
 
-    Configuration config = Configuration.builder()
-        .baseUri(BASE_URI)
-        .basePath("${user.dir}/business")
-        .file(FileMetadata.readFrom(dir + "/business-1.0.0.jar").path("business-1.0.0.jar").classpath())
-        .property("maven.central", MAVEN_BASE)
-        .property("default.launcher.main.class", "me.ruan.Business")
-        .build();
+    Configuration bootstrapConfig = getBootstrapConfig();
+    writeTo(CONFIG_DIR + "/setup.xml", bootstrapConfig);
+  }
 
-    try (Writer out = Files.newBufferedWriter(Paths.get(dir + "/config.xml"))) {
-      config.write(out);
-    }
-
-    dir = configLoc + "/build/bootstrap";
-
-    config = Configuration.builder()
-        .baseUri(BASE_URI)
-        .basePath("${user.dir}/bootstrap")
-        .file(FileMetadata.readFrom(dir + "/../business/config.xml") // fall back if no internet
-            .uri(BASE_URI + "/business/config.xml")
-            .path("../business/config.xml"))
-        .file(FileMetadata.readFrom(dir + "/bootstrap-1.0.0.jar")
-            .classpath()
-            .uri("https://github.com/ruangustavo/update4j-without-ui/raw/master/build"
-                + "/bootstrap/bootstrap-1.0.0.jar"))
-        .property("default.launcher.main.class", "me.ruan.Business")
-        .property("maven.central", MAVEN_BASE)
-        .build();
-
-    try (Writer out = Files.newBufferedWriter(Paths.get(System.getProperty("user.dir") + "/build/setup.xml"))) {
-      config.write(out);
-    }
+  public static Configuration getUpdateConfig() {
+    return Configuration.builder().baseUri(BASE_URI).basePath("${user.dir}/business").file(
+            FileMetadata.readFrom(BUSINESS_DIR + "/business-1.0.0.jar").path("business-1.0.0.jar")
+                .classpath()).property("maven.central", MAVEN_BASE)
+        .property("default.launcher.main.class", "me.ruan.Business").build();
   }
 
   private static final String MAVEN_BASE = "https://repo1.maven.org/maven2";
+
+  public static Configuration getBootstrapConfig() {
+    return Configuration.builder().baseUri(BASE_URI).basePath("${user.dir}/bootstrap").file(
+            FileMetadata.readFrom(BUSINESS_DIR + "/config.xml")
+                .uri(BASE_URI + "/business/config.xml").path("../business/config.xml")).file(
+            FileMetadata.readFrom(BOOTSTRAP_DIR + "/bootstrap-1.0.0.jar").classpath().uri(
+                "https://github.com/ruangustavo/update4j-without-ui/raw/master/build"
+                    + "/bootstrap/bootstrap-1.0.0.jar"))
+        .property("default.launcher.main.class", "me.ruan.Business")
+        .property("maven.central", MAVEN_BASE).build();
+  }
+
+  public static void writeTo(String output, Configuration config) {
+    try (Writer out = Files.newBufferedWriter(Paths.get(output))) {
+      config.write(out);
+    } catch (IOException e) {
+      System.out.println("Error writing config file: " + e.getMessage());
+    }
+  }
 }
