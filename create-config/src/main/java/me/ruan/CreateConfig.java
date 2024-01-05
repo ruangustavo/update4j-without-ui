@@ -11,11 +11,11 @@ import org.update4j.OS;
 
 public class CreateConfig {
 
-  private static String BASE_URI = "https://raw.githubusercontent.com/ruangustavo/update4j-config-files/master";
+  private static final String BASE_URI = "https://raw.githubusercontent.com/ruangustavo/update4j-without-ui/master/build";
 
   public static void main(String[] args) throws IOException {
     String configLoc = System.getProperty("user.dir");
-    String dir = configLoc + "/business";
+    String dir = configLoc + "/build/business";
 
     Configuration config = Configuration.builder()
         .baseUri(BASE_URI)
@@ -29,7 +29,7 @@ public class CreateConfig {
       config.write(out);
     }
 
-    dir = configLoc + "/bootstrap";
+    dir = configLoc + "/build/bootstrap";
 
     config = Configuration.builder()
         .baseUri(BASE_URI)
@@ -39,34 +39,16 @@ public class CreateConfig {
             .path("../business/config.xml"))
         .file(FileMetadata.readFrom(dir + "/bootstrap-1.0.0.jar")
             .classpath()
-            .uri("https://github.com/ruangustavo/update4j-config-files/raw/master"
+            .uri("https://github.com/ruangustavo/update4j-without-ui/raw/master/build"
                 + "/bootstrap/bootstrap-1.0.0.jar"))
         .property("default.launcher.main.class", "me.ruan.Business")
         .property("maven.central", MAVEN_BASE)
         .build();
 
-    try (Writer out = Files.newBufferedWriter(Paths.get(configLoc + "/setup.xml"))) {
+    try (Writer out = Files.newBufferedWriter(Paths.get(System.getProperty("user.dir") + "/build/setup.xml"))) {
       config.write(out);
     }
-
   }
 
   private static final String MAVEN_BASE = "https://repo1.maven.org/maven2";
-
-  private static String mavenUrl(String groupId, String artifactId, String version, OS os) {
-    StringBuilder builder = new StringBuilder();
-    builder.append(MAVEN_BASE + '/');
-    builder.append(groupId.replace('.', '/') + "/");
-    builder.append(artifactId.replace('.', '-') + "/");
-    builder.append(version + "/");
-    builder.append(artifactId.replace('.', '-') + "-" + version);
-
-    if (os != null) {
-      builder.append('-' + os.getShortName());
-    }
-
-    builder.append(".jar");
-
-    return builder.toString();
-  }
 }
