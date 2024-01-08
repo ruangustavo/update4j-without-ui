@@ -1,4 +1,4 @@
-package me.ruan;
+package me.ruan.business;
 
 import org.update4j.LaunchContext;
 import org.update4j.service.Launcher;

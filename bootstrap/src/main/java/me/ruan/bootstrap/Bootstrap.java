@@ -1,4 +1,4 @@
-package me.ruan;
+package me.ruan.bootstrap;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
