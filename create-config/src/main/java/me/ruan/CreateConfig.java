@@ -11,7 +11,7 @@ import org.update4j.FileMetadata;
 
 public class CreateConfig {
 
-  private static final String BASE_URI = "https://raw.githubusercontent.com/ruangustavo/update4j-without-ui/master/build";
+  private static final String BASE_URI = "https://raw.githubusercontent.com/ruangustavo/update4j-without-ui/master/build/";
   private static final String CONFIG_DIR = System.getProperty("user.dir") + "/build";
   private static final String BUSINESS_DIR = CONFIG_DIR + "/business";
   private static final String BOOTSTRAP_DIR = CONFIG_DIR + "/bootstrap";
@@ -34,8 +34,8 @@ public class CreateConfig {
   private static final String MAVEN_BASE = "https://repo1.maven.org/maven2";
 
   public static Configuration getBootstrapConfig() {
-    URI businessConfigUri = URI.create(BASE_URI).resolve("/business/config.xml");
-    URI bootstrapJarUri = URI.create(BASE_URI).resolve("/bootstrap/bootstrap-1.0.0.jar");
+    URI businessConfigUri = URI.create(BASE_URI + "business/config.xml");
+    URI bootstrapJarUri = URI.create(BASE_URI + "bootstrap/bootstrap-1.0.0.jar");
 
     return Configuration.builder().baseUri(BASE_URI).basePath("${user.dir}/bootstrap").file(
             FileMetadata.readFrom(BUSINESS_DIR + "/config.xml")
