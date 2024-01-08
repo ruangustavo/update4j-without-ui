@@ -42,7 +42,7 @@ public class CreateConfig {
                 .uri(businessConfigUri).path("../business/config.xml")).file(
             FileMetadata.readFrom(BOOTSTRAP_DIR + "/bootstrap-1.0.0.jar").classpath()
                 .uri(bootstrapJarUri))
-        .property("default.launcher.main.class", "me.ruan.business.Business")
+        .property("default.launcher.main.class", "org.update4j.Bootstrap")
         .property("maven.central", MAVEN_BASE).build();
   }
 
