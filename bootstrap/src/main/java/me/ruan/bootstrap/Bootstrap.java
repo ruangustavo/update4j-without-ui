@@ -30,7 +30,7 @@ public class Bootstrap implements Delegate {
 
   @Override
   public void main(List<String> list) throws Throwable {
-    URL configUrl = new URL("https://raw.githubusercontent.com/ruangustavo/update4j-update-without-ui/master/build/business/config.xml");
+    URL configUrl = new URL(" ");
     Configuration config = null;
 
     try (Reader in = new InputStreamReader(configUrl.openStream(), StandardCharsets.UTF_8)) {
