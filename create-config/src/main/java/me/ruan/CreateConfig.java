@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.update4j.Configuration;
 import org.update4j.FileMetadata;
+import org.update4j.FileMetadata.Reference;
 
 public class CreateConfig {
 
@@ -28,10 +29,7 @@ public class CreateConfig {
             FileMetadata.readFrom(BUSINESS_DIR + "/business-1.0.0.jar").path("business-1.0.0.jar")
                 .classpath()).property("maven.central", MAVEN_BASE)
         .files(
-            FileMetadata.streamDirectory(CONFIG_DIR + "/media")
-//                .map(
-//                    f -> f.uri(URI.create(BASE_URI)
-//                        .resolve("media/" + f.getSource().toString())))
+            FileMetadata.streamDirectory(BUSINESS_DIR).filter(CreateConfig::isImage)
         )
         .build();
   }
@@ -57,5 +55,14 @@ public class CreateConfig {
     } catch (IOException e) {
       System.out.println("Error writing config file: " + e.getMessage());
     }
+  }
+
+  private static boolean isImage(Reference file) {
+    for (String extension : new String[]{"png", "jpeg", "jpg"}) {
+      if (file.getSource().toString().endsWith(extension)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
