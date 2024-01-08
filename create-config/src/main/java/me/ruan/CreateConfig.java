@@ -5,7 +5,6 @@ import java.io.Writer;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import org.update4j.Configuration;
 import org.update4j.FileMetadata;
 
@@ -28,6 +27,12 @@ public class CreateConfig {
     return Configuration.builder().baseUri(BASE_URI).basePath("${user.dir}/business").file(
             FileMetadata.readFrom(BUSINESS_DIR + "/business-1.0.0.jar").path("business-1.0.0.jar")
                 .classpath()).property("maven.central", MAVEN_BASE)
+        .files(
+            FileMetadata.streamDirectory(CONFIG_DIR + "/media")
+//                .map(
+//                    f -> f.uri(URI.create(BASE_URI)
+//                        .resolve("media/" + f.getSource().toString())))
+        )
         .build();
   }
 
