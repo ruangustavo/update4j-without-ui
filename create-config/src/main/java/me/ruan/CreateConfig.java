@@ -25,7 +25,8 @@ public class CreateConfig {
   }
 
   public static Configuration getUpdateConfig() {
-    return Configuration.builder().baseUri(BASE_URI).basePath("${user.dir}/business").file(
+    return Configuration.builder().baseUri(BASE_URI + "business").basePath("${user.dir}/business")
+        .file(
             FileMetadata.readFrom(BUSINESS_DIR + "/business-1.0.0.jar").path("business-1.0.0.jar")
                 .classpath()).property("maven.central", MAVEN_BASE)
         .files(
