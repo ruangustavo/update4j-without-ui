@@ -32,6 +32,11 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
+          <archive>
+            <manifest>
+              <mainClass>me.ruan.bootstrap.Bootstrap</mainClass>
+            </manifest>
+          </archive>
           <outputDirectory>${project.parent.basedir}/build/bootstrap</outputDirectory>
         </configuration>
       </plugin>
