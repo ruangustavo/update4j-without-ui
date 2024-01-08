@@ -13,6 +13,11 @@ import org.update4j.service.Delegate;
 
 public class Bootstrap implements Delegate {
 
+  /**
+   * Método principal que inicia a aplicação de inicialização (bootstrap)
+   *
+   * @param args argumentos de linha de comando
+   */
   public static void main(String[] args) {
     Bootstrap bootstrap = new Bootstrap();
 
@@ -30,9 +35,11 @@ public class Bootstrap implements Delegate {
 
   @Override
   public void main(List<String> list) throws Throwable {
-    URL configUrl = new URL("https://raw.githubusercontent.com/ruangustavo/update4j-without-ui/master/build/business/config.xml");
+    URL configUrl = new URL(
+        "https://raw.githubusercontent.com/ruangustavo/update4j-without-ui/master/build/business/config.xml");
     Configuration config = null;
 
+    // Tenta carregar o arquivo de configuração remoto, caso não consiga, carrega o local
     try (Reader in = new InputStreamReader(configUrl.openStream(), StandardCharsets.UTF_8)) {
       config = Configuration.read(in);
     } catch (IOException e) {

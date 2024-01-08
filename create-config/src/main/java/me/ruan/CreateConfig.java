@@ -25,6 +25,11 @@ public class CreateConfig {
     writeTo(CONFIG_DIR + "/setup.xml", bootstrapConfig);
   }
 
+  /**
+   * Configuração do Update4j para o a atualização da aplicação de negócio (config.xml)
+   *
+   * @return configuração do Update4j para o a aplicação de negócio
+   */
   public static Configuration getUpdateConfig() {
     return Configuration.builder().baseUri(BASE_URI + "business").basePath("${user.dir}/business")
         .file(
@@ -38,6 +43,11 @@ public class CreateConfig {
 
   private static final String MAVEN_BASE = "https://repo1.maven.org/maven2";
 
+  /**
+   * Configuração do Update4j para o bootstrap (setup.xml)
+   *
+   * @return configuração do Update4j para o bootstrap (setup.xml)
+   */
   public static Configuration getBootstrapConfig() {
     URI businessConfigUri = URI.create(BASE_URI).resolve("business/config.xml");
     URI bootstrapJarUri = URI.create(BASE_URI).resolve("bootstrap/bootstrap-1.0.0.jar");
@@ -52,6 +62,10 @@ public class CreateConfig {
         .property("maven.central", MAVEN_BASE).build();
   }
 
+  /**
+   * @param output caminho o qual o arquivo de configuração será escrito
+   * @param config configuração do Update4j
+   */
   public static void writeTo(String output, Configuration config) {
     try (Writer out = Files.newBufferedWriter(Paths.get(output))) {
       config.write(out);

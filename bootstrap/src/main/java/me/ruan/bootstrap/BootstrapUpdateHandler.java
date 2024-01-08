@@ -12,6 +12,9 @@ import org.update4j.UpdateResult;
 import org.update4j.inject.Injectable;
 import org.update4j.service.UpdateHandler;
 
+/**
+ * Classe responsável por atualizar o aplicativo.
+ */
 public class BootstrapUpdateHandler implements UpdateHandler, Injectable {
 
   private final Configuration configuration;
@@ -20,6 +23,10 @@ public class BootstrapUpdateHandler implements UpdateHandler, Injectable {
     this.configuration = configuration;
   }
 
+  /**
+   * Atualiza o aplicativo. Verifica se uma atualização já foi baixada, se sim, instala a
+   * atualização.
+   */
   public void update() {
     Path zip = Paths.get("business-update.zip");
     UpdateResult updateResult = this.configuration.update(
@@ -35,6 +42,9 @@ public class BootstrapUpdateHandler implements UpdateHandler, Injectable {
     }
   }
 
+  /**
+   * Inicia a aplicação de negócio.
+   */
   public void launch() {
     configuration.launch(this);
   }
