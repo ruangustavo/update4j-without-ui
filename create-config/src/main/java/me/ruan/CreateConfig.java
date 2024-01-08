@@ -2,6 +2,7 @@ package me.ruan;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -27,19 +28,21 @@ public class CreateConfig {
     return Configuration.builder().baseUri(BASE_URI).basePath("${user.dir}/business").file(
             FileMetadata.readFrom(BUSINESS_DIR + "/business-1.0.0.jar").path("business-1.0.0.jar")
                 .classpath()).property("maven.central", MAVEN_BASE)
-        .property("default.launcher.main.class", "me.ruan.Business").build();
+        .build();
   }
 
   private static final String MAVEN_BASE = "https://repo1.maven.org/maven2";
 
   public static Configuration getBootstrapConfig() {
+    URI businessConfigUri = URI.create(BASE_URI).resolve("/business/config.xml");
+    URI bootstrapJarUri = URI.create(BASE_URI).resolve("/bootstrap/bootstrap-1.0.0.jar");
+
     return Configuration.builder().baseUri(BASE_URI).basePath("${user.dir}/bootstrap").file(
             FileMetadata.readFrom(BUSINESS_DIR + "/config.xml")
-                .uri(BASE_URI + "/business/config.xml").path("../business/config.xml")).file(
-            FileMetadata.readFrom(BOOTSTRAP_DIR + "/bootstrap-1.0.0.jar").classpath().uri(
-                "https://github.com/ruangustavo/update4j-without-ui/raw/master/build"
-                    + "/bootstrap/bootstrap-1.0.0.jar"))
-        .property("default.launcher.main.class", "me.ruan.Business")
+                .uri(businessConfigUri).path("../business/config.xml")).file(
+            FileMetadata.readFrom(BOOTSTRAP_DIR + "/bootstrap-1.0.0.jar").classpath()
+                .uri(bootstrapJarUri))
+        .property("default.launcher.main.class", "org.update4j.Bootstrap")
         .property("maven.central", MAVEN_BASE).build();
   }
 
