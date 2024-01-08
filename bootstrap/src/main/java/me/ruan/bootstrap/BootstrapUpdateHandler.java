@@ -40,8 +40,9 @@ public class BootstrapUpdateHandler implements UpdateHandler, Injectable {
   }
 
   @Override
-  public void updateDownloadFileProgress(FileMetadata file, float frac)  {
-    System.out.println("Downloading " + file.getPath().getFileName() + " (" + ((int) (100 * frac)) + "%)");
+  public void updateDownloadFileProgress(FileMetadata file, float frac) {
+    System.out.println(
+        "Downloading " + file.getPath().getFileName() + " (" + ((int) (100 * frac)) + "%)");
   }
 
   @Override

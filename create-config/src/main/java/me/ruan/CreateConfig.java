@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 import org.update4j.Configuration;
 import org.update4j.FileMetadata;
 import org.update4j.FileMetadata.Reference;
@@ -47,6 +48,7 @@ public class CreateConfig {
             FileMetadata.readFrom(BOOTSTRAP_DIR + "/bootstrap-1.0.0.jar").classpath()
                 .uri(bootstrapJarUri))
         .property("default.launcher.main.class", "org.update4j.Bootstrap")
+//        .launcher("me.ruan.business.Business")
         .property("maven.central", MAVEN_BASE).build();
   }
 
@@ -54,16 +56,12 @@ public class CreateConfig {
     try (Writer out = Files.newBufferedWriter(Paths.get(output))) {
       config.write(out);
     } catch (IOException e) {
-      System.out.println("Error writing config file: " + e.getMessage());
+      System.out.printf("Error writing config file: %s%n", e.getMessage());
     }
   }
 
   private static boolean isImage(Reference file) {
-    for (String extension : new String[]{"png", "jpeg", "jpg"}) {
-      if (file.getSource().toString().endsWith(extension)) {
-        return true;
-      }
-    }
-    return false;
+    return Stream.of("png", "jpeg", "jpg")
+        .anyMatch(extension -> file.getSource().toString().endsWith(extension));
   }
 }
